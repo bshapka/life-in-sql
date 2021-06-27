@@ -1,4 +1,4 @@
 create table config (
-    key not null primary key,
-    value integer not null
+    key text not null primary key,
+    value text integer not null
 );
