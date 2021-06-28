@@ -2,10 +2,21 @@
 This project is an implementation of Conway's Game of Life (or Life for short) in Structured Query Language (SQL).
 
 ## About the code
-The source code of this project was written in SQL (specifically the SQLite dialect).
+The source code of this project was written in SQL, specifically the SQLite dialect. **No procedural extension of SQL was
+used.** Here is a high-level summary of the components:
+* The script `create_config.sql` creates the table `config` (used to hold configuration settings)
+* The script `initialize_config.sql` empties and then loads `config`
+* The script `create_state.sql` creates the table `state` (used to hold the current state of the world)
+* The script `initialize_state.sql` empties `state`, then uses `config` to load `state` with random data
+* The script `render_state.sql` renders the contents of `state` in grid form
+* The script `update_state.sql` replaces the data in `state` with data corresponding to the next state of the world
+* The script `play.sql` runs `render_state.sql` and `update_state.sql` in that order
+* The file `play.db` is a SQLite3 database file that is the intended target for all of the above scripts
 
-Here is a high-level summary of the resources:
-TODO
+All scripts are extensively documented in their source files, so those details won't be repeated here. This project is
+largely an exploratory proof-of-concept, and SQL is not well-suited to implementing Life for various reasons. As such,
+the documentation in most scripts has a section called Additional Notes. These sections contain detailed explanations
+of each script at a level of detail that would typically not be supplied.
 
 ### Implementation Details
 This sub-section assumes basic familiarity with Life. If you are not familiar with Life but want to 
@@ -22,8 +33,17 @@ This implementation uses a toroidal grid. As such, objects that leave the screen
 with the same trajectory and velocity at the equivalent location on the opposing edge.
 
 ### Running the Project
+The following is a set of recommended directions for running the project. Note that these directions assume an SQLite3 
+binary exists and is associated with the shell command `sqlite3`. The project was developed and tested with version 3.32.3 
+of SQLite. Compatibility with previous versions is not guaranteed.
+* Start a shell session and navigate to the root directory of the project/cloned repo
+* Run the command `sqlite3 life.db '.read initialize_state.sql` to randomly generate an initial state
+* Run the command `sqlite3 life.db '.read play.sql` first render the state and then update the state to the next state
 
-TODO
+Re-run `play.sql` using the above method as many times as you desire to render and update the state. Since no procedural
+extension of SQL was used, there is no animation loop, and hence the user must render and advance the state manually. 
+
+Porting the code to another type of database system would likely be fairly quick and easy, but this has not been tested.
 
 ## About Life
 Life is a cellular automation created by the English mathematician John Conway. As a cellular automation, 
