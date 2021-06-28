@@ -30,9 +30,7 @@ create temporary table next_state as select * from state where 1 = 2;
 
 with candidates as (
     with recursive offset (n) as (
-        values (
-            -1
-        )
+        values (-1)
         union all
         select
             n + 1
@@ -60,13 +58,15 @@ with candidates as (
             0
         end as exists_in_state,
         count(*) as cnt
-    from state
+    from
+        state
     cross join
         offset as x_offset
     cross join
         offset as y_offset
-    group by x_coordinate + x_offset.n,
-             y_coordinate + y_offset.n
+    group by
+        x_coordinate + x_offset.n,
+        y_coordinate + y_offset.n
 )
 insert into
     next_state
@@ -79,7 +79,5 @@ where
     cnt = 3 or (cnt = 4 and exists_in_state = 1);
 
 delete from state;
-
 insert into state select * from next_state;
-
 drop table next_state;

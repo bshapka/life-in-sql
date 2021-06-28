@@ -9,10 +9,10 @@
 --
 -- By construction, the data generated for the initial state adheres to the following conditions:
 --
--- 1) x_coordinate is a random integer in the interval [0, config['MAX_X_COORDINATE']]
--- 2) y_coordinate is a random integer in the interval [0, config['MAX_Y_COORDINATE']]
+-- 1) x_coordinate is a random integer in the interval [0, config['WIDTH'])
+-- 2) y_coordinate is a random integer in the interval [0, config['HEIGHT'])
 -- 3) The size of the initial state is the floor of
---    (config['MAX_X_COORDINATE'] + 1) * (config['MAX_Y_COORDINATE'] + 1) * config['DENSITY']
+--    config['WIDTH'] * config['HEIGHT'] * config['DENSITY']
 --
 -- Note that the CTE generates twice as many records than actually desired (see the where clause of the CTE), and then
 -- the desired number of records are taken (see the limit clause of the outer select statement). This is done because
@@ -29,11 +29,11 @@ delete from state;
 with recursive initial_state(n, x_coordinate, y_coordinate, state_size) as (
     values(
         0,
-        abs(random() % cast((select value from config where key = 'MAX_X_COORDINATE') as integer) + 1),
-        abs(random() % cast((select value from config where key = 'MAX_Y_COORDINATE') as integer) + 1),
+        abs(random() % cast((select value from config where key = 'WIDTH') as integer)),
+        abs(random() % cast((select value from config where key = 'HEIGHT') as integer)),
         cast(
-            (cast((select value from config where key = 'MAX_X_COORDINATE') as integer) + 1) *
-            (cast((select value from config where key = 'MAX_Y_COORDINATE') as integer) + 1) *
+            cast((select value from config where key = 'WIDTH') as integer) *
+            cast((select value from config where key = 'HEIGHT') as integer) *
             cast((select value from config where key = 'DENSITY') as real)
             as integer
         )
@@ -41,8 +41,8 @@ with recursive initial_state(n, x_coordinate, y_coordinate, state_size) as (
     union all
     select
         n + 1,
-        abs(random() % cast((select value from config where key = 'MAX_X_COORDINATE') as integer) + 1),
-        abs(random() % cast((select value from config where key = 'MAX_Y_COORDINATE') as integer) + 1),
+        abs(random() % cast((select value from config where key = 'WIDTH') as integer)),
+        abs(random() % cast((select value from config where key = 'HEIGHT') as integer)),
         state_size
     from
         initial_state
