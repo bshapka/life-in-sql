@@ -37,8 +37,8 @@ The following is a set of recommended directions for running the project. Note t
 binary exists and is associated with the shell command `sqlite3`. The project was developed and tested with version 3.32.3 
 of SQLite. Compatibility with previous versions is not guaranteed.
 * Start a shell session and navigate to the root directory of the project/cloned repo
-* Run the command `sqlite3 life.db '.read initialize_state.sql` to randomly generate an initial state
-* Run the command `sqlite3 life.db '.read play.sql` first render the state and then update the state to the next state
+* Run the command `sqlite3 life.db '.read initialize_state.sql'` to randomly generate an initial state
+* Run the command `sqlite3 life.db '.read play.sql'` first render the state and then update the state to the next state
 
 Re-run `play.sql` using the above method as many times as you desire to render and update the state. Since no procedural
 extension of SQL was used, there is no animation loop, and hence the user must render and advance the state manually. 
