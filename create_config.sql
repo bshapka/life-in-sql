@@ -10,5 +10,9 @@
 --
 create table config (
     key text not null primary key, -- a key/unique identifier for a configuration value
-    value text not null            -- a configuration value
+    value text not null,           -- a configuration value
+    check (
+        (key in ("WIDTH", "HEIGHT") and cast(value as integer) >= 0) -- require WIDTH and HEIGHT values to be at least 0
+        or (key = "DENSITY" and cast(value as real) between 0 and 1) -- require DENSITY entry to be in the interval [0, 1]
+    )
 );
