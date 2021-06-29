@@ -3,7 +3,7 @@ This project is an implementation of Conway's Game of Life (or Life for short) i
 
 ## About Life
 For information about the game, see [About Life](https://github.com/bshapka/life-in-x/blob/main/ABOUT_LIFE.md).
-For information about tne creator of the game, see [About John Conway](https://github.com/bshapka/life-in-x/blob/main/ABOUT_CONWAY.md).
+For information about the creator of the game, see [About John Conway](https://github.com/bshapka/life-in-x/blob/main/ABOUT_CONWAY.md).
 
 ## Running the Project
 The following is a set of recommended directions for running the project. Note that these directions assume an SQLite3 
