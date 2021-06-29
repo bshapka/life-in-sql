@@ -29,31 +29,31 @@ delete from state;
 with recursive initial_state(n, x_coordinate, y_coordinate, state_size) as (
     values(
         0,
-        abs(random() % cast((select value from config where key = 'WIDTH') as integer)),
-        abs(random() % cast((select value from config where key = 'HEIGHT') as integer)),
+        abs(random() % cast((select config.value from config where config.key = 'WIDTH') as integer)),
+        abs(random() % cast((select config.value from config where config.key = 'HEIGHT') as integer)),
         cast(
-            cast((select value from config where key = 'WIDTH') as integer) *
-            cast((select value from config where key = 'HEIGHT') as integer) *
-            cast((select value from config where key = 'DENSITY') as real)
+            cast((select config.value from config where config.key = 'WIDTH') as integer) *
+            cast((select config.value from config where config.key = 'HEIGHT') as integer) *
+            cast((select config.value from config where config.key = 'DENSITY') as real)
             as integer
         )
     )
     union all
     select
         n + 1,
-        abs(random() % cast((select value from config where key = 'WIDTH') as integer)),
-        abs(random() % cast((select value from config where key = 'HEIGHT') as integer)),
-        state_size
+        abs(random() % cast((select config.value from config where config.key = 'WIDTH') as integer)),
+        abs(random() % cast((select config.value from config where config.key = 'HEIGHT') as integer)),
+        initial_state.state_size
     from
         initial_state
     where
-        n + 1 < state_size * 2
+        n + 1 < initial_state.state_size * 2
 )
 insert into
     state
 select distinct
-    x_coordinate,
-    y_coordinate
+    initial_state.x_coordinate,
+    initial_state.y_coordinate
 from
     initial_state
-limit (select distinct state_size from initial_state);
+limit (select distinct initial_state.state_size from initial_state);

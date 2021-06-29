@@ -40,8 +40,8 @@ with candidates as (
             n + 1 < 2
     )
     select
-        x_coordinate + x_offset.n as x_coordinate,
-        y_coordinate + y_offset.n as y_coordinate,
+        state.x_coordinate + x_offset.n as x_coordinate,
+        state.y_coordinate + y_offset.n as y_coordinate,
         case
         when exists (
             select
@@ -49,8 +49,8 @@ with candidates as (
             from
                 state s0
             where
-                s0.x_coordinate = x_coordinate + x_offset.n
-                and s0.y_coordinate = y_coordinate + y_offset.n
+                s0.x_coordinate = state.x_coordinate + x_offset.n
+                and s0.y_coordinate = state.y_coordinate + y_offset.n
         )
         then
             1
@@ -65,8 +65,8 @@ with candidates as (
     cross join
         offset as y_offset
     group by
-        x_coordinate + x_offset.n,
-        y_coordinate + y_offset.n
+        state.x_coordinate + x_offset.n,
+        state.y_coordinate + y_offset.n
 )
 insert into
     next_state
@@ -76,7 +76,7 @@ select
 from
     candidates
 where
-    cnt = 3 or (cnt = 4 and exists_in_state = 1);
+    candidates.cnt = 3 or (candidates.cnt = 4 and candidates.exists_in_state = 1);
 
 delete from state;
 insert into state select * from next_state;

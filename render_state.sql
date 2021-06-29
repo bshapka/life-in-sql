@@ -48,30 +48,30 @@
 with recursive x_dim (coordinate, upper_limit) as (
         values(
             0,
-            cast((select value from config where key = 'WIDTH') as integer)
+            cast((select config.value from config where config.key = 'WIDTH') as integer)
         )
         union all
         select
-            coordinate + 1,
-            upper_limit
+            x_dim.coordinate + 1,
+            x_dim.upper_limit
         from
             x_dim
         where
-            coordinate + 1 < upper_limit
+            x_dim.coordinate + 1 < x_dim.upper_limit
     ),
  y_dim (coordinate, upper_limit) as (
         values(
             0,
-            cast((select value from config where key = 'HEIGHT') as integer)
+            cast((select config.value from config where config.key = 'HEIGHT') as integer)
         )
         union all
         select
-            coordinate + 1,
-            upper_limit
+            y_dim.coordinate + 1,
+            y_dim.upper_limit
         from
             y_dim
         where
-            coordinate + 1 < upper_limit
+            y_dim.coordinate + 1 < y_dim.upper_limit
     )
 select
     group_concat(
