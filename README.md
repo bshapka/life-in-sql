@@ -1,5 +1,6 @@
 # Life in SQL
-This project is an implementation of Conway's Game of Life (or Life for short) in Structured Query Language (SQL).
+This project is an implementation of Conway's Game of Life (or Life for short) in Structured Query Language (SQL). **No procedural
+extension to SQL is used.**
 
 ## About Life
 For information about the game, see [About Life](https://github.com/bshapka/life-in-x/blob/main/ABOUT_LIFE.md).
